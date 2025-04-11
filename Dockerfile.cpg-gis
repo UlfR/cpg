@@ -1,0 +1,25 @@
+FROM ghcr.io/cloudnative-pg/postgis:17-3.5-100 
+
+USER root
+RUN echo "ru_RU.UTF-8 UTF-8" > /etc/locale.gen && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    echo "kk_KZ.UTF-8 UTF-8" >> /etc/locale.gen && \
+    echo "Asia/Almaty" > /etc/timezone && \
+    echo 'LANG="ru_RU.UTF-8"'>/etc/default/locale && \
+    dpkg-reconfigure -f noninteractive tzdata && \
+    dpkg-reconfigure -f noninteractive locales && \
+    update-locale LANG=ru_RU.UTF-8 && \
+    rm -rf /etc/localtime && \
+    ln -s /usr/share/zoneinfo/Asia/Almaty /etc/localtime
+
+USER 26
+ENV LANG=ru_RU.UTF-8
+
+# wget https://github.com/omniti-labs/pg_jobmon/archive/refs/heads/master.zip
+# unzip master.zip
+# cd pg_jobmon-master
+# apt update && apt install -y build-essential && make && make install
+# wget https://github.com/pgpartman/pg_partman/archive/refs/tags/v5.2.1.zip
+# unzip v5.2.1.zip
+# cd pg_partman-5.2.1/
+# apt install -y postgresql-server-dev-17
